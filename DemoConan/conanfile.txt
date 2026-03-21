@@ -1,0 +1,11 @@
+[requires]
+glfw/3.4
+glad/2.0.8
+linmath.h/cci.20220619
+
+[generators]
+CMakeConfigDeps
+CMakeToolchain
+
+[layout]
+cmake_layout
