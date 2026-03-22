@@ -1,0 +1,21 @@
+{
+    "tasks": [
+        {
+            "label": "Configure conan dependencies",
+            "type": "shell",
+            "command": "conan install . -s build_type=Debug -c 'tools.cmake.cmaketoolchain:generator=Ninja Multi-Config' -c 'tools.cmake.cmakedeps:new=will_break_next' --build=missing --deployer=runtime_deploy --deployer-folder 'build/Debug' -c tools.system.package_manager:mode=install -c tools.system.package_manager:sudo=True -c 'tools.env:dotenv=True' && conan install . -s build_type=Release -c 'tools.cmake.cmaketoolchain:generator=Ninja Multi-Config' -c 'tools.cmake.cmakedeps:new=will_break_next' --build=missing --deployer=runtime_deploy --deployer-folder 'build/Release' -c tools.system.package_manager:mode=install -c tools.system.package_manager:sudo=True -c 'tools.env:dotenv=True'",
+            "options": {
+                "cwd": "${workspaceFolder}",
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": true
+            },
+            "problemMatcher": []
+        }
+    ]
+}

@@ -272,8 +272,8 @@ The selection of compiler toolchain works differently to the standalone project 
 **Before** opening the `DemoConan` project in VS Code follow these steps. On Windows, open a Developer Shell by running the previously created `AMD64 Developer PowerShell` shortcut. On Linux, simply run a terminal. Change to you project directory, and run:
 
 ```sh
-conan install . -s build_type=Debug -c "tools.cmake.cmaketoolchain:generator=Ninja Multi-Config" -c 'tools.cmake.cmakedeps:new=will_break_next' --build=missing --deployer=runtime_deploy --deployer-folder "build/Debug" -c tools.system.package_manager:mode=install -c tools.system.package_manager:sudo=True
-conan install . -s build_type=Release -c "tools.cmake.cmaketoolchain:generator=Ninja Multi-Config" -c 'tools.cmake.cmakedeps:new=will_break_next' --build=missing --deployer=runtime_deploy --deployer-folder "build/Release" -c tools.system.package_manager:mode=install -c tools.system.package_manager:sudo=True
+conan install . -s build_type=Debug -c 'tools.cmake.cmaketoolchain:generator=Ninja Multi-Config' -c 'tools.cmake.cmakedeps:new=will_break_next' --build=missing --deployer=runtime_deploy --deployer-folder 'build/Debug' -c tools.system.package_manager:mode=install -c tools.system.package_manager:sudo=True -c 'tools.env:dotenv=True'
+conan install . -s build_type=Release -c 'tools.cmake.cmaketoolchain:generator=Ninja Multi-Config' -c 'tools.cmake.cmakedeps:new=will_break_next' --build=missing --deployer=runtime_deploy --deployer-folder 'build/Release' -c tools.system.package_manager:mode=install -c tools.system.package_manager:sudo=True -c 'tools.env:dotenv=True'
 ```
 
 The command `conan install` is slightly mis-named; it actually *configures* your project to use the globally installed dependencies of the project. If they aren't installed yet, they will be installed *once* (and built) if necessary, though. The dependency libraries will be installed per user, in `~/.conan2` / `$env:USERPROFILE\.conan2`. `conan` generates several files in the `build` directory that allow `CMake` to find these libraries. We are using *two* invocations of `conan install` to get the libraries for both `Debug` and `Release` configurations.
@@ -281,6 +281,8 @@ The command `conan install` is slightly mis-named; it actually *configures* your
 For this particular demo project, on Linux these commands will also install system-wide dependencies using the system package manager (e.g. `apt-get`). The project depends on OpenGL for which `conan` installs the necessary system packages. The options `-c tools.system.package_manager:mode=install -c tools.system.package_manager:sudo=True` enable this `conan` feature; they can be omitted for most projects.
 
 - **Note**: After deleting the `build` directory, you will have to **re-run** the above `conan install` commands.
+
+The demo project also contains a configured task to run `conan install` - after opening the project in VS Code (see below), you can then also perform this action by selecting `Tasks: Run Task` from the command palette (`Ctrl-Shift-P`) and clicking `Configure conan dependencies`. However this does not always work reliably from within VS Code, and it's usually better to manually run `conan install` *before* opening the folder in VS Code.
 
 ### Opening project in VS Code
 
@@ -478,7 +480,7 @@ or
 cmake --build build --preset conan-release
 ```
 
-## Cross-Compiling Linux → Window
+## Cross-Compiling Linux → Windows
 
 With the given setup, it is easy to compile applications for a different platform, also including using libraries for that target platform - this used to be very difficult. Since the number of possible combinations for current and target system is very large, we'll focus here on the pretty common case of building Windows applications on Linux.
 
