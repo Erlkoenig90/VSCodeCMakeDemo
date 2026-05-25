@@ -106,7 +106,7 @@ Saving detected profile to C:\Users\…\.conan2\profiles\default
 ### Verify
 Open the previously created shortcut for `AMD64 Developer PowerShell` and use `Get-Command` to verify that all tools are available:
 ```powershell
-Get-Command -Name cmake,ninja,python,conan,cl
+Get-Command -Name cmake,ninja,python,conan,cl,git
 ```
 this should print something like:
 ```
